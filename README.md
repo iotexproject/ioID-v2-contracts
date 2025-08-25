@@ -1,66 +1,67 @@
-## Foundry
+# ioID v2 Contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This project contains the smart contracts for ioID v2, a system for creating and managing NFTs for devices. It uses the Foundry framework for development, testing, and deployment.
 
-Foundry consists of:
+## Overview
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+The core of this project is a factory pattern for creating `DeviceNFT` contracts. Each `DeviceNFT` contract is an ERC721 token that represents a unique device.
 
-## Documentation
+### Contracts
 
-https://book.getfoundry.sh/
+*   `src/deviceNFT/DeviceNFTFactory.sol`: This is the main factory contract. It has a `createDeviceNFT` function that deploys a new `DeviceNFT` contract (clone) for a user.
+*   `src/deviceNFT/DeviceNFTTemplate.sol`: This is the template contract for the `DeviceNFT`. It's an upgradeable ERC721 contract with minting controlled by an owner and an operator.
 
-## Usage
+## Getting Started
+
+### Prerequisites
+
+*   [Foundry](https://getfoundry.sh/)
+
+### Installation
+
+1.  Clone the repository:
+    ```shell
+    git clone <repository-url>
+    cd ioID-v2-contracts
+    ```
+2.  Install dependencies:
+    ```shell
+    forge install
+    ```
 
 ### Build
 
+To build the contracts, run:
+
 ```shell
-$ forge build
+forge build
 ```
 
 ### Test
 
-```shell
-$ forge test
-```
-
-### Format
+To run the tests, run:
 
 ```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
+forge test
 ```
 
 ### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
+The project includes a deployment script in `script/DeployDeviceNFT.s.sol`. To deploy the contracts, you can use the following command:
 
 ```shell
-$ cast <subcommand>
+forge script script/DeployDeviceNFT.s.sol:DeployDeviceNFT --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
-### Help
+Make sure to replace `<your_rpc_url>` and `<your_private_key>` with your actual RPC URL and private key.
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+## Dependencies
+
+This project uses the following libraries:
+
+*   [forge-std](https://github.com/foundry-rs/forge-std): Standard library for Foundry projects.
+*   [openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts): A library for secure smart contract development.
+*   [openzeppelin-contracts-upgradeable](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable): Upgradeable versions of OpenZeppelin Contracts.
+
+These dependencies are managed using `git submodules` and are located in the `lib/` directory.
+
