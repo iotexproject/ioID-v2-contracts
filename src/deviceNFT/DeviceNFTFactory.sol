@@ -13,10 +13,10 @@ contract DeviceNFTFactory {
         IMPLEMENTATION = _implementation;
     }
 
-    function createDeviceNFT(string memory name, string memory symbol, address operator) external returns (address) {
+    function createDeviceNFT(string memory name, string memory symbol, address owner, address operator) external returns (address) {
         address clone = Clones.clone(IMPLEMENTATION);
 
-        DeviceNFTTemplate(clone).initialize(name, symbol, msg.sender,  operator);
+        DeviceNFTTemplate(clone).initialize(name, symbol, owner,  operator);
 
         emit DeviceNFTContractCreated(clone);
 

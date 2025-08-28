@@ -41,7 +41,7 @@ contract DeviceNFTFactoryTest is Test {
     
     function test_CreateDeviceNFT() public {
         vm.prank(user1);
-        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         // Verify clone was created
         assertTrue(cloneAddress != address(0));
@@ -58,11 +58,11 @@ contract DeviceNFTFactoryTest is Test {
     function test_CreateMultipleDeviceNFTs() public {
         // Create first device NFT
         vm.prank(user1);
-        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         // Create second device NFT
         vm.prank(user2);
-        address clone2 = factory.createDeviceNFT(NAME2, SYMBOL2, operator2);
+        address clone2 = factory.createDeviceNFT(NAME2, SYMBOL2, user2, operator2);
         
         // Verify both clones are different
         assertTrue(clone1 != clone2);
@@ -87,11 +87,11 @@ contract DeviceNFTFactoryTest is Test {
     function test_CreateDeviceNFTWithSameParameters() public {
         // Create first device NFT
         vm.prank(user1);
-        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         // Create second device NFT with same parameters but different sender
         vm.prank(user2);
-        address clone2 = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone2 = factory.createDeviceNFT(NAME1, SYMBOL1, user2, operator1);
         
         // Clones should be different addresses
         assertTrue(clone1 != clone2);
@@ -110,7 +110,7 @@ contract DeviceNFTFactoryTest is Test {
     
     function test_CreateDeviceNFTWithEmptyStrings() public {
         vm.prank(user1);
-        address clone = factory.createDeviceNFT("", "", operator1);
+        address clone = factory.createDeviceNFT("", "", user1, operator1);
         
         DeviceNFTTemplate deviceNFT = DeviceNFTTemplate(clone);
         assertEq(deviceNFT.name(), "");
@@ -121,7 +121,7 @@ contract DeviceNFTFactoryTest is Test {
     
     function test_CreateDeviceNFTWithZeroOperator() public {
         vm.prank(user1);
-        address clone = factory.createDeviceNFT(NAME1, SYMBOL1, address(0));
+        address clone = factory.createDeviceNFT(NAME1, SYMBOL1, user1, address(0));
         
         DeviceNFTTemplate deviceNFT = DeviceNFTTemplate(clone);
         assertEq(deviceNFT.operator(), address(0));
@@ -131,10 +131,10 @@ contract DeviceNFTFactoryTest is Test {
     function test_CloneIndependence() public {
         // Create two clones
         vm.prank(user1);
-        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         vm.prank(user2);
-        address clone2 = factory.createDeviceNFT(NAME2, SYMBOL2, operator2);
+        address clone2 = factory.createDeviceNFT(NAME2, SYMBOL2, user2, operator2);
         
         DeviceNFTTemplate deviceNFT1 = DeviceNFTTemplate(clone1);
         DeviceNFTTemplate deviceNFT2 = DeviceNFTTemplate(clone2);
@@ -158,7 +158,7 @@ contract DeviceNFTFactoryTest is Test {
     
     function test_CloneFunctionality() public {
         vm.prank(user1);
-        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         DeviceNFTTemplate clone = DeviceNFTTemplate(cloneAddress);
         
@@ -204,7 +204,7 @@ contract DeviceNFTFactoryTest is Test {
     
     function test_CloneCannotBeReinitializedDirectly() public {
         vm.prank(user1);
-        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address cloneAddress = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         DeviceNFTTemplate clone = DeviceNFTTemplate(cloneAddress);
         
@@ -223,6 +223,7 @@ contract DeviceNFTFactoryTest is Test {
             clones[i] = factory.createDeviceNFT(
                 string(abi.encodePacked("Device", vm.toString(i))),
                 string(abi.encodePacked("DEV", vm.toString(i))),
+                user1,
                 operator1
             );
         }
@@ -254,10 +255,10 @@ contract DeviceNFTFactoryTest is Test {
         
         // Create clones from both factories
         vm.prank(user1);
-        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone1 = factory.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         vm.prank(user1);
-        address clone2 = factory2.createDeviceNFT(NAME1, SYMBOL1, operator1);
+        address clone2 = factory2.createDeviceNFT(NAME1, SYMBOL1, user1, operator1);
         
         // Clones should be different
         assertTrue(clone1 != clone2);
