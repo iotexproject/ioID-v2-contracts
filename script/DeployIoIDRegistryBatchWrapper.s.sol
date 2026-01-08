@@ -11,6 +11,7 @@ contract DeployIoIDRegistryBatchWrapper is Script {
     address constant ACCOUNT_IMPLEMENTATION_PROXY = 0xb59b64Bb12f1E68d646FDE8e51C89f02bd479E73;
     address constant ACCOUNT_IMPLEMENTATION_UPGRADABLE = 0x471C226dB08F0e8C576083Dd3b8C856edb05420C; // You need to provide this
     bytes32 constant ACCOUNT_SALT = 0x0000000000000000000000000000000000000000000000000000000000000000;
+    address constant BATCH_WRAPPER_OWNER = 0x3174B19C3dcE9B6536b4e964EAFa8761C4F5B53d;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -18,6 +19,7 @@ contract DeployIoIDRegistryBatchWrapper is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         IoIDRegistryBatchWrapper batchWrapper = new IoIDRegistryBatchWrapper(
+            BATCH_WRAPPER_OWNER,
             IOID_REGISTRY_CONTRACT,
             ACCOUNT_REGISTRY_CONTRACT,
             ACCOUNT_IMPLEMENTATION_PROXY,
