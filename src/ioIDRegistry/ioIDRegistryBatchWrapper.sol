@@ -65,7 +65,6 @@ contract IoIDRegistryBatchWrapper {
         address[] calldata nftContracts,
         uint256[] calldata tokenIDs
     ) external returns (address[] memory accountAddresses) {
-        require(msg.sender == IIoIDRegistry(ioIDRegistry).operator(), "Not operator");
         require(
             ioIDIdentifiers.length == chainIDs.length &&
             chainIDs.length == nftContracts.length &&
