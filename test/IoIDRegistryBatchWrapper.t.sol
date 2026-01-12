@@ -176,6 +176,40 @@ contract IoIDRegistryBatchWrapperTest is Test {
             tokenIDs
         );
     }
+
+    function testRegisterDeviceNFT() public {
+        mockIoIDRegistry.setOperator(address(batchWrapper));
+
+        bytes32 ioIDIdentifier = keccak256("device-single");
+        uint256 chainID = 4689;
+        address nftContract = address(0x4444);
+        uint256 tokenID = 99;
+
+        batchWrapper.registerDeviceNFT(
+            ioIDIdentifier,
+            chainID,
+            abi.encodePacked(nftContract),
+            tokenID
+        );
+
+        assertTrue(mockIoIDRegistry.registered(ioIDIdentifier));
+    }
+
+    function testRegisterDeviceNFTOnlyOwner() public {
+        bytes32 ioIDIdentifier = keccak256("device-single");
+        uint256 chainID = 4689;
+        address nftContract = address(0x4444);
+        uint256 tokenID = 99;
+
+        vm.prank(nonOperator);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, nonOperator));
+        batchWrapper.registerDeviceNFT(
+            ioIDIdentifier,
+            chainID,
+            abi.encodePacked(nftContract),
+            tokenID
+        );
+    }
     
     function testBatchRegisterArrayMismatch() public {
         bytes32[] memory ioIDIdentifiers = new bytes32[](2);

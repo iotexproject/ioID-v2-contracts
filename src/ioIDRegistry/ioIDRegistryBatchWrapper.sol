@@ -101,4 +101,18 @@ contract IoIDRegistryBatchWrapper is Ownable {
         
         return accountAddresses;
     }
+
+    function registerDeviceNFT(
+        bytes32 ioIDIdentifier,
+        uint256 chainID,
+        bytes memory NFTcontract,
+        uint256 tokenID
+    ) external onlyOwner {
+        IIoIDRegistry(ioIDRegistry).registerDeviceNFT(
+            ioIDIdentifier,
+            chainID,
+            NFTcontract,
+            tokenID
+        );
+    }
 }
